@@ -92,11 +92,9 @@ public class MainCircles extends JFrame implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             addBall(sprites);
-            System.out.println(sprites.length);
         }
         if (e.getButton() == MouseEvent.BUTTON3) {
             deleteBall(sprites);
-            System.out.println(sprites.length);
         }
     }
 
