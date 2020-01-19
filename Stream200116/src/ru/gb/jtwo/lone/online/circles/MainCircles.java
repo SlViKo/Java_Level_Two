@@ -39,6 +39,7 @@ public class MainCircles extends JFrame {
     public void onDrawFrame(GameCanvas canvas, Graphics g, float deltaTime) {
         update(canvas, deltaTime); // obnovlenie // S = v * t
         render(canvas, g); // otrisovka
+
     }
 
     private void update(GameCanvas canvas, float deltaTime) {
@@ -51,6 +52,7 @@ public class MainCircles extends JFrame {
         for (int i = 0; i < sprites.length; i++) {
             sprites[i].render(canvas, g);
         }
+
     }
 
 }

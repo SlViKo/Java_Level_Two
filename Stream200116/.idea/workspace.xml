@@ -15,6 +15,7 @@
     </option>
   </component>
   <component name="ProjectId" id="1WU7GpZVp0Esjmvq4eLX4TC4UhY" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="autoscrollToSource" value="true" />
@@ -23,6 +24,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../java_уровень_1/урок 4/Lesson8" />
   </component>
@@ -83,7 +88,26 @@
       <option name="presentableId" value="Default" />
       <updated>1579192227049</updated>
     </task>
+    <task id="LOCAL-00001" summary="Добавление класса ColorBackground">
+      <created>1579377993292</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1579377993292</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Добавление класса ColorBackground">
+      <created>1579378004104</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1579378004104</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Добавление класса ColorBackground" />
+    <option name="LAST_COMMIT_MESSAGE" value="Добавление класса ColorBackground" />
   </component>
   <component name="WindowStateProjectService">
     <state x="473" y="257" key="#com.intellij.ide.util.MemberChooser" timestamp="1579201897924">
@@ -102,25 +126,45 @@
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1060" y="275" key="FileChooserDialogImpl/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579250075138" />
-    <state width="2561" height="281" key="GridCell.Tab.0.bottom" timestamp="1579250079089">
+    <state width="2561" height="281" key="GridCell.Tab.0.bottom" timestamp="1579421693371">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2561" height="281" key="GridCell.Tab.0.bottom/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579250079089" />
+    <state width="2561" height="281" key="GridCell.Tab.0.bottom/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579421693371" />
     <state width="1254" height="131" key="GridCell.Tab.0.bottom/0.23.1680.978/1680.23.1920.1057@0.23.1680.978" timestamp="1579202391830" />
-    <state width="2561" height="281" key="GridCell.Tab.0.center" timestamp="1579250079089">
+    <state width="2561" height="281" key="GridCell.Tab.0.center" timestamp="1579421693370">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2561" height="281" key="GridCell.Tab.0.center/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579250079089" />
+    <state width="2561" height="281" key="GridCell.Tab.0.center/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579421693370" />
     <state width="1254" height="131" key="GridCell.Tab.0.center/0.23.1680.978/1680.23.1920.1057@0.23.1680.978" timestamp="1579202391829" />
-    <state width="2561" height="281" key="GridCell.Tab.0.left" timestamp="1579250079089">
+    <state width="2561" height="281" key="GridCell.Tab.0.left" timestamp="1579421693370">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2561" height="281" key="GridCell.Tab.0.left/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579250079089" />
+    <state width="2561" height="281" key="GridCell.Tab.0.left/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579421693370" />
     <state width="1254" height="131" key="GridCell.Tab.0.left/0.23.1680.978/1680.23.1920.1057@0.23.1680.978" timestamp="1579202391829" />
-    <state width="2561" height="281" key="GridCell.Tab.0.right" timestamp="1579250079089">
+    <state width="2561" height="281" key="GridCell.Tab.0.right" timestamp="1579421693371">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
-    <state width="2561" height="281" key="GridCell.Tab.0.right/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579250079089" />
+    <state width="2561" height="281" key="GridCell.Tab.0.right/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579421693371" />
     <state width="1254" height="131" key="GridCell.Tab.0.right/0.23.1680.978/1680.23.1920.1057@0.23.1680.978" timestamp="1579202391830" />
+    <state width="2561" height="347" key="GridCell.Tab.1.bottom" timestamp="1579420021687">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="2561" height="347" key="GridCell.Tab.1.bottom/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579420021687" />
+    <state width="2561" height="347" key="GridCell.Tab.1.center" timestamp="1579420021687">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="2561" height="347" key="GridCell.Tab.1.center/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579420021687" />
+    <state width="2561" height="347" key="GridCell.Tab.1.left" timestamp="1579420021687">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="2561" height="347" key="GridCell.Tab.1.left/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579420021687" />
+    <state width="2561" height="347" key="GridCell.Tab.1.right" timestamp="1579420021687">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="2561" height="347" key="GridCell.Tab.1.right/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579420021687" />
+    <state x="984" y="414" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1579419428130">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="984" y="414" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.2560.1040/4480.-399.1280.680/2560.0.1920.1040@0.0.2560.1040" timestamp="1579419428130" />
   </component>
 </project>
