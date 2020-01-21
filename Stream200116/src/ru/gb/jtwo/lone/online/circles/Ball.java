@@ -2,7 +2,7 @@ package ru.gb.jtwo.lone.online.circles;
 
 import java.awt.*;
 
-public class Ball extends Sprite {
+public class Ball extends Sprite  {
     private final Color color = new Color (
             (int)(Math.random() * 255),
             (int)(Math.random() * 255),
@@ -16,8 +16,15 @@ public class Ball extends Sprite {
         halfWidth = halfHeight;
     }
 
+    Ball(int x, int y) {
+        this();
+        this.x = x;
+        this.y = y;
+
+    }
+
     @Override
-    void update(GameCanvas canvas, float deltaTime) {
+    public void update(GameCanvas canvas, float deltaTime) {
         x += vX * deltaTime;
         y += vY * deltaTime;
         if (getLeft() < canvas.getLeft()) {
@@ -39,7 +46,7 @@ public class Ball extends Sprite {
     }
 
     @Override
-    void render(GameCanvas canvas, Graphics g) {
+    public void render(GameCanvas canvas, Graphics g) {
         g.setColor(color);
         g.fillOval((int) getLeft(), (int) getTop(),
                 (int) getWidth(), (int) getHeight());

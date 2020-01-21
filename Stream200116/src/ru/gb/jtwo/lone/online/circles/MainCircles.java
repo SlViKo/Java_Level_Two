@@ -2,16 +2,17 @@ package ru.gb.jtwo.lone.online.circles;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class MainCircles extends JFrame implements MouseListener {
+public class MainCircles extends JFrame {
     private static final int POS_X = 400;
     private static final int POS_Y = 200;
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 600;
 
-    Sprite[] sprites = new Sprite[10];
+    private Mashin[] mashins = new Mashin[1];
+    private int mashinCounter;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -27,16 +28,26 @@ public class MainCircles extends JFrame implements MouseListener {
         setBounds(POS_X, POS_Y, WINDOW_WIDTH, WINDOW_HEIGHT);
         initApplication();
         GameCanvas canvas = new GameCanvas(this);
-        canvas.addMouseListener(this);
+        canvas.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(e.getButton() == MouseEvent.BUTTON1) {
+                    addMashin(new Ball(e.getX(), e.getY()));
+                }
+                if(e.getButton() == MouseEvent.BUTTON3) {
+                    deleteMashin();
+                }
+
+            }
+        });
         add(canvas, BorderLayout.CENTER);
         setTitle("Circles");
         setVisible(true);
     }
 
     private void initApplication() {
-        for (int i = 0; i < sprites.length; i++) {
-            sprites[i] = new Ball();
-        }
+        addMashin(new Background());
+        addMashin(new Ball());
     }
 
     public void onDrawFrame(GameCanvas canvas, Graphics g, float deltaTime) {
@@ -46,76 +57,35 @@ public class MainCircles extends JFrame implements MouseListener {
     }
 
     private void update(GameCanvas canvas, float deltaTime) {
-        for (int i = 0; i < sprites.length; i++) {
-            sprites[i].update(canvas, deltaTime);
+        for (int i = 0; i < mashinCounter; i++) {
+            mashins[i].update(canvas, deltaTime);
         }
     }
 
     private void render(GameCanvas canvas, Graphics g) {
-        for (int i = 0; i < sprites.length; i++) {
-            sprites[i].render(canvas, g);
+        for (int i = 0; i < mashinCounter; i++) {
+            mashins[i].render(canvas, g);
         }
     }
 
-    /**
-     * Метод добавления шарика в массив по клику левой кнопки мыши
-     * @param sprites
-     */
-    private void addBall(Sprite[] sprites) {
-        Sprite[] sprite = new Sprite[sprites.length + 1];
-        for (int i = 0; i < sprite.length; i++) {
-            if (i == sprite.length - 1) {
-                sprite[sprite.length - 1] = new Ball();
-                break;
+
+    private void addMashin(Mashin sprite) {
+        if (mashinCounter == mashins.length) {
+            Mashin[] newGameObjects = new Mashin[mashins.length * 2];
+            System.arraycopy(mashins, 0, newGameObjects, 0, mashins.length);
+            mashins = newGameObjects;
+        }
+        mashins[mashinCounter++] = sprite;
+    }
+
+
+    private void deleteMashin() {
+            if(!(mashins[mashinCounter-1] instanceof Background)) {
+                mashinCounter--;
             }
-            sprite[i] = sprites[i];
         }
-        this.sprites = sprite;
-    }
-
-    /**
-     * Метод удаления шарика из массива по клику правой кнопки мыши
-     * @param sprites
-     */
-    private void deleteBall(Sprite[] sprites) {
-        if (sprites.length > 0) {
-            Sprite[] sprite = new Sprite[sprites.length - 1];
-            for (int i = 0; i < sprite.length; i++) {
-                sprite[i] = sprites[i];
-            }
-            this.sprites = sprite;
-        }
-    }
 
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            addBall(sprites);
-        }
-        if (e.getButton() == MouseEvent.BUTTON3) {
-            deleteBall(sprites);
-        }
-    }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 
 }

@@ -2,13 +2,13 @@ package ru.gb.jtwo.lone.online.circles;
 
 import java.awt.*;
 
-public class Sprite {
+public class Sprite implements Mashin {
     protected float x;
     protected float y;
     protected float halfWidth;
     protected float halfHeight;
 
-    protected float getLeft() {
+    protected float getLeft()  {
         return x - halfWidth;
     }
     protected void setLeft(float left) {
@@ -38,7 +38,9 @@ public class Sprite {
     protected float getHeight() {
         return 2f * halfHeight;
     }
-    void update(GameCanvas canvas, float deltaTime) {}
-    void render(GameCanvas canvas, Graphics g) {}
+    @Override
+    public void update(GameCanvas canvas, float deltaTime) {}
+    @Override
+    public  void render(GameCanvas canvas, Graphics g) {}
 
 }
