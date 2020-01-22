@@ -57,7 +57,6 @@ public class StringMain {
 //        arrayInt = lineWork.changeStringToInt();
 //        sum = lineWork.getSumDivideTwo();
 
-
         LineWork lineWorkFile = new LineWork(new File(System.getProperty("user.dir"), "example.txt"));
 
     }
@@ -66,7 +65,7 @@ public class StringMain {
         System.out.println("Массив из String:");
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j]+ " ");
+                System.out.print(arr[i][j] + " ");
             }
             System.out.println();
         }
@@ -76,7 +75,7 @@ public class StringMain {
         System.out.println("Массив из int:");
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j]+ " ");
+                System.out.print(arr[i][j] + " ");
             }
             System.out.println();
         }
