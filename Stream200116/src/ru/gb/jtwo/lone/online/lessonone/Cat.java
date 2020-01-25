@@ -1,4 +1,4 @@
-package ru.gb.jtwo.lone.online;
+package ru.gb.jtwo.lone.online.lessonone;
 
 public class Cat extends Animal {
     int age = 10;

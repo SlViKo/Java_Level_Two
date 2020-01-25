@@ -1,8 +1,11 @@
-package ru.gb.jtwo.lone.online.circles;
+package ru.gb.jtwo.lone.online.lessonone.circles;
+
+import ru.gb.jtwo.lone.online.lessonone.circles.GameCanvas;
+import ru.gb.jtwo.lone.online.lessonone.circles.Sprite;
 
 import java.awt.*;
 
-public class Ball extends Sprite  {
+public class Ball extends Sprite {
     private final Color color = new Color (
             (int)(Math.random() * 255),
             (int)(Math.random() * 255),

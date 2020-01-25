@@ -1,4 +1,6 @@
-package ru.gb.jtwo.lone.online;
+package ru.gb.jtwo.lone.online.lessonone;
+
+import ru.gb.jtwo.lone.online.lessonone.Cat;
 
 public class Main {
     public static void main(String[] args) {

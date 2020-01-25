@@ -5,7 +5,7 @@
  * @author SlViKo (Кобозев Вячеслав)
  * @version date 19/01/2010
  */
-package ru.gb.jtwo.lone.online.circles;
+package ru.gb.jtwo.lone.online.lessonone.circles;
 
 import java.awt.*;
 

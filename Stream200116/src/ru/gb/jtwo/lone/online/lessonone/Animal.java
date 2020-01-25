@@ -1,4 +1,4 @@
-package ru.gb.jtwo.lone.online;
+package ru.gb.jtwo.lone.online.lessonone;
 
 public abstract class Animal {
     String name;
