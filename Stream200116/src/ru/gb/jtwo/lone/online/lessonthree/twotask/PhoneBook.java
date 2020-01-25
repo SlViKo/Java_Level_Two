@@ -1,4 +1,4 @@
-package ru.gb.jtwo.lone.online.lessonthree;
+package ru.gb.jtwo.lone.online.lessonthree.twotask;
 
 import java.util.ArrayList;
 import java.util.HashMap;

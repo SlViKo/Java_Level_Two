@@ -1,4 +1,4 @@
-package ru.gb.jtwo.lone.online.lessonthree;
+package ru.gb.jtwo.lone.online.lessonthree.twotask;
 
 import java.util.ArrayList;
 
@@ -27,10 +27,6 @@ public class Person {
 
     public ArrayList<String> getListPhone() {
         return listPhone;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
 

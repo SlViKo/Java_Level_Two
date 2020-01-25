@@ -1,4 +1,16 @@
-package ru.gb.jtwo.lone.online.lessonthree;
+/**
+ *  2. Написать простой класс PhoneBook(внутри использовать HashMap):
+ *   - В качестве ключа использовать фамилию
+ *   - В каждой записи всего два поля: phone, e-mail
+ *   - Отдельный метод для поиска номера телефона по фамилии (ввели фамилию, получили ArrayList телефонов),
+ *   и отдельный метод для поиска e-mail по фамилии. Следует учесть, что под одной фамилией может быть
+ *   несколько записей. Итого должно получиться 3 класса Main, PhoneBook, Person.
+ *
+ * @author SlViKo
+ * @version date 11/01/2010
+ */
+
+package ru.gb.jtwo.lone.online.lessonthree.twotask;
 
 public class TestPhoneBook {
     public static void main(String[] args) {

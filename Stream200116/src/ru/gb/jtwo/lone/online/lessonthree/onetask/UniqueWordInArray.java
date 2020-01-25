@@ -1,4 +1,4 @@
-package ru.gb.jtwo.lone.online.lessonthree;
+package ru.gb.jtwo.lone.online.lessonthree.onetask;
 
 import java.util.HashMap;
 import java.util.HashSet;
