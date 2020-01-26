@@ -7,7 +7,7 @@
  *   несколько записей. Итого должно получиться 3 класса Main, PhoneBook, Person.
  *
  * @author SlViKo
- * @version date 11/01/2010
+ * @version date 26/01/2010
  */
 
 package ru.gb.jtwo.lone.online.lessonthree.twotask;
