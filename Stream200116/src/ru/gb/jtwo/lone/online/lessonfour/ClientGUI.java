@@ -1,3 +1,11 @@
+/**
+ *
+ * Отправлять сообщения в журнал по нажатию кнопки Enter или по нажатию кнопки Send на графическом интерфейсе
+ * Создать журнал в файле (показать комментарием, где и как Вы планируете писать сообщение в файловый журнал)
+ *
+ * @author SlViKo
+ * @version date 29/01/2010
+ */
 package ru.gb.jtwo.lone.online.lessonfour;
 
 import javax.swing.*;
@@ -30,8 +38,9 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private final JButton btnSend = new JButton("Send");
     private final JList<String> userList = new JList<>();
 
-    Calendar calendar = new Calendar();
-    private final String fileName =
+    //переменная для имени файла за определенную дату, не уверен в правильности расположения и реализации
+    Calendar calendar = Calendar.getInstance();
+    private final String logFileName = calendar.get(Calendar.DATE)+ "-" + (calendar.get(Calendar.MONTH) + 1) + '-' + calendar.get(Calendar.YEAR)+ "log.txt";
 
     private ClientGUI() {
         Thread.setDefaultUncaughtExceptionHandler(this);
@@ -52,12 +61,10 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             public void keyReleased(KeyEvent e) {
                 super.keyTyped(e);
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    if (!(tfMessage.getText().equals(""))) {
-                        log.append(tfMessage.getText() + "\n");
-                        tfMessage.setText("");
+                    sendMessage();
                     }
                 }
-            }
+
         });
 
         panelTop.add(tfIPAddress);
@@ -93,8 +100,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         if (src == cbAlwaysOnTop) {
             setAlwaysOnTop(cbAlwaysOnTop.isSelected());
         } else if (src == btnSend) {
-            sendMessage(this);
-
+            sendMessage();
         } else {
             throw new RuntimeException("Unknown source: " + src);
         }
@@ -112,8 +118,11 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         System.exit(1);
     }
 
-    private void sendMessage(ClientGUI clientGUI) {
-        try (FileWriter writer = new FileWriter(fileName, true)) {
+    /**
+     * Метод отправки сообщения
+     */
+    private void sendMessage() {
+        try (FileWriter writer = new FileWriter(logFileName, true)) {
             if (!(tfMessage.getText().equals(""))) {
                 log.append(tfMessage.getText() + "\n");
                 writer.write(tfMessage.getText() + "\n");
