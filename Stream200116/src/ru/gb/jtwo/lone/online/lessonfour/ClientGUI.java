@@ -20,8 +20,8 @@ import java.util.Calendar;
 
 public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler {
 
-    private static final int WIDTH = 400;
-    private static final int HEIGHT = 300;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 400;
 
     private final JTextArea log = new JTextArea();
     private final JPanel panelTop = new JPanel(new GridLayout(2, 3));
@@ -48,14 +48,17 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         setLocationRelativeTo(null);
         setSize(WIDTH, HEIGHT);
         log.setEditable(false);
+        log.setLineWrap(true);
         JScrollPane scrollLog = new JScrollPane(log);
         JScrollPane scrollUser = new JScrollPane(userList);
         String[] users = {"user1", "user2", "user3", "user4", "user5",
                 "user_with_an_exceptionally_long_name_in_this_chat"};
         userList.setListData(users);
-        scrollUser.setPreferredSize(new Dimension(100, 0));
+        scrollUser.setPreferredSize(new Dimension(150, 0));
         cbAlwaysOnTop.addActionListener(this);
         btnSend.addActionListener(this);
+
+        //метод для кнопки Enter
         tfMessage.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
@@ -122,10 +125,13 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
      * Метод отправки сообщения
      */
     private void sendMessage() {
+        calendar = Calendar.getInstance();
+        String message;
         try (FileWriter writer = new FileWriter(logFileName, true)) {
             if (!(tfMessage.getText().equals(""))) {
-                log.append(tfMessage.getText() + "\n");
-                writer.write(tfMessage.getText() + "\n");
+                message = tfLogin.getText()+"("+ calendar.getTime() + "): " + tfMessage.getText() + "\n";
+                log.append(message);
+                writer.write(message);
                 tfMessage.setText("");
             }
         } catch (IOException e) {
