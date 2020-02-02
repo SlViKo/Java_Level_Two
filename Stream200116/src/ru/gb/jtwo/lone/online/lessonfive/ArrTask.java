@@ -9,7 +9,7 @@ package ru.gb.jtwo.lone.online.lessonfive;
 import java.util.Arrays;
 
 public class ArrTask {
-    static final int SIZE = 10000000;
+    static final int SIZE = 10;
     static final int partOne = (int) Math.floor(SIZE / 2);
     static final int partTwo = (int) Math.ceil(SIZE / 2);
 
@@ -32,8 +32,8 @@ public class ArrTask {
         float[] arrPartOne = arrDeleteTwo(arr, partOne);
         float[] arrPartTwo = arrDeleteTwo(arr, partTwo);
 
-        WorkWithArrThread tOne = new WorkWithArrThread(arrPartOne);
-        WorkWithArrThread tTwo = new WorkWithArrThread(arrPartTwo);
+        WorkWithArrThread tOne = new WorkWithArrThread(arrPartOne, SIZE, "one");
+        WorkWithArrThread tTwo = new WorkWithArrThread(arrPartTwo, SIZE, "two");
 
         tOne.run();
         tTwo.run();
@@ -46,22 +46,21 @@ public class ArrTask {
         }
 
         System.arraycopy(arrPartOne, 0, arr, 0, partOne);
-        System.arraycopy(arrPartTwo, 0, arr, partTwo, partTwo);
+        System.arraycopy(arrPartTwo, 0, arr, partOne, partTwo);
 
         System.out.println("Время затраченное на расчет массива, c использования многопоточности: " + (float) (System.currentTimeMillis() - timeStart) / 1000f + " сек");
+
     }
 
     private float[] arrDeleteTwo(float arr[], int part) {
-        float[] arrPart = new float[0];
+        float[] arrPart;
 
         if (part == partOne) {
             arrPart = new float[partOne];
             System.arraycopy(arr, 0, arrPart, 0, partOne);
-            ;
         } else {
             arrPart = new float[partTwo];
-            System.arraycopy(arr, 0, arrPart, partTwo, partTwo);
-            ;
+            System.arraycopy(arr, partOne, arrPart, 0, partTwo);
         }
         return arrPart;
     }
