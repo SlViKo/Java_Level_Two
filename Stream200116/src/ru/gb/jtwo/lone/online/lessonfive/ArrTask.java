@@ -9,7 +9,7 @@ package ru.gb.jtwo.lone.online.lessonfive;
 import java.util.Arrays;
 
 public class ArrTask {
-    static final int SIZE = 10;
+    static final int SIZE = 1000000000;
     static final int partOne = (int) Math.floor(SIZE / 2);
     static final int partTwo = (int) Math.ceil(SIZE / 2);
 
