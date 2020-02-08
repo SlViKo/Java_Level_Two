@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class SocketThread extends Thread {
+public class  SocketThread extends Thread {
 
     private final SocketThreadListener listener;
     private final Socket socket;
