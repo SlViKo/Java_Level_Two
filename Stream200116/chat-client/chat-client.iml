@@ -9,5 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="Stream200116" />
     <orderEntry type="module" module-name="network" />
+    <orderEntry type="module" module-name="chat-library" />
   </component>
 </module>
