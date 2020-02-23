@@ -17,17 +17,23 @@ import java.util.Arrays;
 
 public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler, SocketThreadListener {
 
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 300;
+    private static final int WIDTH = 700;
+    private static final int HEIGHT = 350;
 
     private final JTextArea log = new JTextArea();
+
     private final JPanel panelTop = new JPanel(new GridLayout(2, 3));
+    private final JPanel panelBtnInput = new JPanel(new GridLayout(1, 2)); //объединие в одну панель кнопки регистрация и логин Java 3_2
+    private final JPanel panelLog = new JPanel(new BorderLayout()); // создание панель для центральной зоны лог и список юзеров Java 3_2
     private final JTextField tfIPAddress = new JTextField("127.0.0.1");
     private final JTextField tfPort = new JTextField("8189");
     private final JCheckBox cbAlwaysOnTop = new JCheckBox("Always on top");
     private final JTextField tfLogin = new JTextField("ivan");
     private final JPasswordField tfPassword = new JPasswordField("123");
     private final JButton btnLogin = new JButton("Login");
+    private final JButton btnRegistration = new JButton("Registration"); // добавление кнопки регистрации Java 3_2
+    private final JButton btnChangeNick = new JButton("Change nick"); // добавление кнопки изменения ника java 3-2
+
 
     private final JPanel panelBottom = new JPanel(new BorderLayout());
     private final JButton btnDisconnect = new JButton("<html><b>Disconnect</b></html>");
@@ -56,20 +62,30 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         tfMessage.addActionListener(this);
         btnLogin.addActionListener(this);
         btnDisconnect.addActionListener(this);
+        btnRegistration.addActionListener(this); // обработчик на кнопку регистрации Java 3_2
         panelBottom.setVisible(false);
+
+        panelLog.add(scrollLog, BorderLayout.CENTER); // добавление тексовой зоны на отдельную панель Java 3_2
+        panelLog.add(scrollUser, BorderLayout.EAST);
+
+
+
+        // добавление кнопки регистарции и логин в отдельную панель Java 3_2
+        panelBtnInput.add(btnLogin);
+        panelBtnInput.add(btnRegistration);
 
         panelTop.add(tfIPAddress);
         panelTop.add(tfPort);
         panelTop.add(cbAlwaysOnTop);
         panelTop.add(tfLogin);
         panelTop.add(tfPassword);
-        panelTop.add(btnLogin);
+        panelTop.add(panelBtnInput); // добавлнении панели с кнопками входа на верхнюю панель Java 3_2
+
         panelBottom.add(btnDisconnect, BorderLayout.WEST);
         panelBottom.add(tfMessage, BorderLayout.CENTER);
         panelBottom.add(btnSend, BorderLayout.EAST);
 
-        add(scrollLog, BorderLayout.CENTER);
-        add(scrollUser, BorderLayout.EAST);
+        add(panelLog, BorderLayout.CENTER); // размещение панели с тектсовой зоной на окно Java 3_2
         add(panelTop, BorderLayout.NORTH);
         add(panelBottom, BorderLayout.SOUTH);
 
@@ -77,6 +93,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     }
 
     private void connect() {
+        Library.setTypeInput(btnLogin.getText());
         try {
             Socket socket = new Socket(tfIPAddress.getText(), Integer.parseInt(tfPort.getText()));
             socketThread = new SocketThread(this, "Client", socket);
@@ -105,8 +122,21 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             connect();
         } else if (src == btnDisconnect) {
             socketThread.close();
+        } else if (src == btnRegistration) { // обработчик события нажатия кнопки Регистрация Java 3_2
+            registration();
         } else {
             throw new RuntimeException("Unknown source: " + src);
+        }
+    }
+
+
+    private void registration() {
+        Library.setTypeInput(btnRegistration.getText());
+        try {
+            Socket socket = new Socket(tfIPAddress.getText(), Integer.parseInt(tfPort.getText()));
+            socketThread = new SocketThread(this, "Client", socket);
+        } catch (IOException e) {
+            showException(Thread.currentThread(), e);
         }
     }
 
@@ -165,7 +195,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
 
     /**
      * Socket thread listener methods
-     * */
+     */
 
     @Override
     public void onSocketStart(SocketThread thread, Socket socket) {
@@ -187,7 +217,6 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         String login = tfLogin.getText();
         String password = new String(tfPassword.getPassword());
         thread.sendMessage(Library.getAuthRequest(login, password));
-
     }
 
     @Override

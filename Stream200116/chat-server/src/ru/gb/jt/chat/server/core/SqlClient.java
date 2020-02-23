@@ -36,4 +36,32 @@ public class SqlClient {
         }
         return null;
     }
+
+    /**
+     * получение ника по логину Java 3_2
+     * @param login
+     * @return
+     */
+    synchronized static String getNickname(String login) {
+        String query = String.format("Select nickname from users where login = '%s'", login);
+        try (ResultSet set = statement.executeQuery(query);) {
+            if(set.next()) {
+                return set.getString(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    /**
+     * создание пользователя Java 3_2
+     * @param login
+     * @param password
+     * @throws SQLException
+     */
+    synchronized static void  createUser(String login, String password) throws SQLException {
+        String query = String.format("INSERT INTO users (login, password, nickname) VALUES ('%s', '%s', '%s')", login, password, login);
+        statement.execute(query);
+    }
 }

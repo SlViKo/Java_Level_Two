@@ -19,6 +19,11 @@ public class Library {
     // то есть сообщение, которое будет посылаться всем
     public static final String TYPE_BCAST_CLIENT = "/client_msg";
     public static final String USER_LIST = "/user_list";
+    public static String typeInput; // тип режима входа Java 3_2
+
+    public static void setTypeInput(String typeInput) {
+        Library.typeInput = typeInput;
+    }
 
     public static String getTypeBcastClient(String msg) {
         return TYPE_BCAST_CLIENT + DELIMITER + msg;
@@ -29,7 +34,7 @@ public class Library {
     }
 
     public static String getAuthRequest(String login, String password) {
-        return AUTH_REQUEST + DELIMITER + login + DELIMITER + password;
+        return AUTH_REQUEST + DELIMITER + typeInput + DELIMITER + login + DELIMITER + password; // добавил тип режима входа Java 3-2
     }
 
     public static String getAuthAccept(String nickname) {
