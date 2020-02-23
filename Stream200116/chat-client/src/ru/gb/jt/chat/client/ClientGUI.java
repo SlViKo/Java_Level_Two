@@ -36,6 +36,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
 
 
     private final JPanel panelBottom = new JPanel(new BorderLayout());
+    private final JPanel panelBtnDisconnect = new JPanel(new GridLayout(1, 2)); // панель для кнопок дисконект и смены ника java 3-2
     private final JButton btnDisconnect = new JButton("<html><b>Disconnect</b></html>");
     private final JTextField tfMessage = new JTextField();
     private final JButton btnSend = new JButton("Send");
@@ -63,6 +64,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         btnLogin.addActionListener(this);
         btnDisconnect.addActionListener(this);
         btnRegistration.addActionListener(this); // обработчик на кнопку регистрации Java 3_2
+        btnChangeNick.addActionListener(this); // обработчик на кнопку смены ника Java 3_2
         panelBottom.setVisible(false);
 
         panelLog.add(scrollLog, BorderLayout.CENTER); // добавление тексовой зоны на отдельную панель Java 3_2
@@ -81,7 +83,9 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         panelTop.add(tfPassword);
         panelTop.add(panelBtnInput); // добавлнении панели с кнопками входа на верхнюю панель Java 3_2
 
-        panelBottom.add(btnDisconnect, BorderLayout.WEST);
+        panelBtnDisconnect.add(btnDisconnect);
+        panelBtnDisconnect.add(btnChangeNick);
+        panelBottom.add(panelBtnDisconnect, BorderLayout.WEST);
         panelBottom.add(tfMessage, BorderLayout.CENTER);
         panelBottom.add(btnSend, BorderLayout.EAST);
 
@@ -122,15 +126,33 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             connect();
         } else if (src == btnDisconnect) {
             socketThread.close();
+        } else if (src == btnChangeNick) {
+            changeNickUser();
         } else if (src == btnRegistration) { // обработчик события нажатия кнопки Регистрация Java 3_2
-            registration();
+            registrationUser();
         } else {
             throw new RuntimeException("Unknown source: " + src);
         }
     }
 
+    /**
+     * смена ника пользователя Java 3-2
+     */
+    private void changeNickUser() {
+        String newNickName = JOptionPane.showInputDialog(this,"Введите новый ник");
+        if(newNickName == null) {
+            JOptionPane.showMessageDialog(this,"Поля нового NickName обязательно для заполнения");
+            return;
+        }
+        String login = tfLogin.getText();
+        String password = tfPassword.getText();
+        socketThread.sendMessage(Library.getChangeNick(login, password, newNickName));
+    }
 
-    private void registration() {
+    /***
+     * регистрация нового пользователя Java_3-2
+     */
+    private void registrationUser() {
         Library.setTypeInput(btnRegistration.getText());
         try {
             Socket socket = new Socket(tfIPAddress.getText(), Integer.parseInt(tfPort.getText()));
@@ -139,6 +161,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             showException(Thread.currentThread(), e);
         }
     }
+
+
 
     private void sendMessage() {
         String msg = tfMessage.getText();

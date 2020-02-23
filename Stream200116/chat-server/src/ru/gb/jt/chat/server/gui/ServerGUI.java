@@ -18,7 +18,7 @@ public class   ServerGUI extends JFrame implements ActionListener, Thread.Uncaug
     private final ChatServer chatServer = new ChatServer(this);
     private final JButton btnStart = new JButton("Start");
     private final JButton btnStop = new JButton("Stop");
-    private final JPanel panelTop = new JPanel(new GridLayout(1,2));
+    private final JPanel panelTop = new JPanel(new GridLayout(0,2));
     private final JTextArea log = new JTextArea();
 
     public static void main(String[] args) {

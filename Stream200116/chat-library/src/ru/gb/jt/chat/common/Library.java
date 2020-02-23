@@ -12,6 +12,7 @@ public class Library {
     public static final String DELIMITER = "±";
     public static final String AUTH_REQUEST = "/auth_request";
     public static final String AUTH_ACCEPT = "/auth_accept";
+    public static final String CHANGE_NICK = "/change_nick"; // добавление нового типа запроса смены ника
     public static final String AUTH_DENIED = "/auth_denied";
     public static final String MSG_FORMAT_ERROR = "/msg_format_error";
     // если мы вдруг не поняли, что за сообщение и не смогли разобрать
@@ -54,4 +55,14 @@ public class Library {
                 DELIMITER + src + DELIMITER + message;
     }
 
+    /**
+     * метод смены ника Java 3-2
+     * @param login
+     * @param password
+     * @param newNickName
+     * @return
+     */
+    public static String getChangeNick(String login, String password, String newNickName) {
+        return CHANGE_NICK + DELIMITER + login + DELIMITER + password + DELIMITER + newNickName;
+    }
 }
