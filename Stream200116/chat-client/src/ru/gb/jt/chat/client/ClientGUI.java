@@ -193,8 +193,14 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             public void run() {
                 log.append(msg + "\n");
                 log.setCaretPosition(log.getDocument().getLength());
+                addTextFile(msg);
             }
         });
+    }
+
+
+    private void addTextFile(String msg) {
+        
     }
 
     private void showException(Thread t, Throwable e) {
