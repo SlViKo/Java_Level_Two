@@ -200,7 +200,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
 
 
     private void addTextFile(String msg) {
-        
+
     }
 
     private void showException(Thread t, Throwable e) {
