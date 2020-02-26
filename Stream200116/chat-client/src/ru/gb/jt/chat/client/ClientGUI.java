@@ -287,6 +287,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         panelTop.setVisible(true);
         setTitle(WINDOW_TITLE);
         userList.setListData(new String[0]);
+        log.setText(""); // очищение текста в чате при дисконекте Java 3-3
+
     }
 
     @Override
