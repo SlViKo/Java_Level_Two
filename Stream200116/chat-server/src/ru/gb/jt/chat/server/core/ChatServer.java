@@ -8,6 +8,7 @@ import ru.gb.jt.network.SocketThreadListener;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
@@ -118,7 +119,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     }
 
     @Override
-    public synchronized void onReceiveString(SocketThread thread, Socket socket, String msg) {
+    public synchronized void onReceiveString(SocketThread thread, Socket socket, String msg) throws SQLException {
         ClientThread client = (ClientThread) thread;
         if (client.isAuthorized()) {
             handleAuthMessage(client, msg);
@@ -129,38 +130,65 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
 
     private void handleNonAuthMessage(ClientThread client, String msg) {
         String[] arr = msg.split(Library.DELIMITER);
-        if (arr.length != 3 || !arr[0].equals(Library.AUTH_REQUEST)) {
+        if (arr.length != 4 || !arr[0].equals(Library.AUTH_REQUEST)) {
             client.msgFormatError(msg);
             return;
         }
-        String login = arr[1];
-        String password = arr[2];
-        String nickname = SqlClient.getNickname(login, password);
-        if (nickname == null) {
-            putLog("Invalid login attempt: " + login);
-            client.authFail();
-            return;
-        } else {
-            ClientThread oldClient = findClientByNickname(nickname);
-            client.authAccept(nickname);
-            if (oldClient == null) {
-                sendToAuthClients(Library.getTypeBroadcast("Server", nickname + " connected"));
+        String login = arr[2];
+        String password = arr[3];
+        String nickname;
+        if(arr[1].equals("Login")) {
+           nickname = SqlClient.getNickname(login, password);
+            if (nickname == null) {
+                putLog("Invalid login attempt: " + login);
+                client.authFail();
+                return;
             } else {
-                oldClient.reconnect();
-                clients.remove(oldClient);
+                ClientThread oldClient = findClientByNickname(nickname);
+                client.authAccept(nickname);
+                if (oldClient == null) {
+                    sendToAuthClients(Library.getTypeBroadcast("Server", nickname + " connected"));
+                } else {
+                    oldClient.reconnect();
+                    clients.remove(oldClient);
+                }
             }
-
+        } else if (arr[1].equals("Registration")) { // добавление обработки регитсрации нового пользователя Java 3-2
+            nickname = SqlClient.getNickname(login);
+            if (nickname == null) {
+                try {
+                    SqlClient.createUser(login, password);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                putLog("Invalid login attempt: " + login);
+                client.authFail();
+                return;
+            }
         }
         sendToAuthClients(Library.getUserList(getUsers()));
     }
 
-    private void handleAuthMessage(ClientThread client, String msg) {
+    private void handleAuthMessage(ClientThread client, String msg) throws SQLException {
         String[] arr = msg.split(Library.DELIMITER);
         String msgType = arr[0];
         switch (msgType) {
             case Library.TYPE_BCAST_CLIENT:
                 sendToAuthClients(Library.getTypeBroadcast(
                         client.getNickname(), arr[1]));
+                break;
+            case Library.CHANGE_NICK: //добавление изменения ника пользователя Java 3-2
+                String login = arr[1];
+                String password = arr[2];
+                String newNickname = arr[3];
+                if(!SqlClient.isNickname(newNickname)) {
+                    String nickname = SqlClient.getNickname(login, password);
+                    ClientThread oldClient = findClientByNickname(nickname);
+                    oldClient.reconnect();
+                    clients.remove(oldClient);
+                    SqlClient.updateNickname(login, password, newNickname);
+                }
                 break;
             default:
                 client.sendMessage(Library.getMsgFormatError(msg));
