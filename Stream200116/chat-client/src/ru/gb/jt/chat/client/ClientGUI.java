@@ -167,12 +167,15 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
 
     private void sendMessage() {
         String msg = tfMessage.getText();
-        String username = tfLogin.getText();
+        if(Censorship.checkWords(msg)) { // проверка на недопустимые слова по цензуре JAVA 3-3
+            putLog("Недопустимые слова");
+            tfMessage.setText(null);
+            return;
+        }
         if ("".equals(msg)) return;
         tfMessage.setText(null);
         tfMessage.requestFocusInWindow();
         socketThread.sendMessage(Library.getTypeBcastClient(msg));
-        //wrtMsgToLogFile(msg, username);
     }
 
     /**
