@@ -8,14 +8,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 public class ClientGUI extends JFrame implements ActionListener, Thread.UncaughtExceptionHandler, SocketThreadListener {
+
 
     private static final int WIDTH = 700;
     private static final int HEIGHT = 350;
@@ -71,7 +74,6 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         panelLog.add(scrollUser, BorderLayout.EAST);
 
 
-
         // добавление кнопки регистарции и логин в отдельную панель Java 3_2
         panelBtnInput.add(btnLogin);
         panelBtnInput.add(btnRegistration);
@@ -96,6 +98,15 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         setVisible(true);
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() { // Event Dispatching Thread
+                new ClientGUI();
+            }
+        });
+    }
+
     private void connect() {
         Library.setTypeInput(btnLogin.getText());
         try {
@@ -104,15 +115,6 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         } catch (IOException e) {
             showException(Thread.currentThread(), e);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() { // Event Dispatching Thread
-                new ClientGUI();
-            }
-        });
     }
 
     @Override
@@ -139,9 +141,9 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
      * смена ника пользователя Java 3-2
      */
     private void changeNickUser() {
-        String newNickName = JOptionPane.showInputDialog(this,"Введите новый ник");
-        if(newNickName == null) {
-            JOptionPane.showMessageDialog(this,"Поля нового NickName обязательно для заполнения");
+        String newNickName = JOptionPane.showInputDialog(this, "Введите новый ник");
+        if (newNickName == null) {
+            JOptionPane.showMessageDialog(this, "Поля нового NickName обязательно для заполнения");
             return;
         }
         String login = tfLogin.getText();
@@ -163,20 +165,30 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     }
 
 
-
     private void sendMessage() {
         String msg = tfMessage.getText();
-        String username = tfLogin.getText();
+        if(Censorship.checkWords(msg)) { // проверка на недопустимые слова по цензуре JAVA 3-3
+            putLog("Недопустимые слова");
+            tfMessage.setText(null);
+            return;
+        }
         if ("".equals(msg)) return;
         tfMessage.setText(null);
         tfMessage.requestFocusInWindow();
         socketThread.sendMessage(Library.getTypeBcastClient(msg));
-        //wrtMsgToLogFile(msg, username);
     }
 
-    private void wrtMsgToLogFile(String msg, String username) {
-        try (FileWriter out = new FileWriter("log.txt", true)) {
-            out.write(username + ": " + msg + "\n");
+    /**
+     * Метод добавления чата в файл Java 3-3
+     *
+     * @param msg
+     * @param username
+     */
+    private void wrtMsgToLogFile(String msg, String username) throws IOException {
+        File file = new File(username + "log.txt");
+        file.createNewFile();
+        try (FileWriter out = new FileWriter(file, true)) {
+            out.write(msg + "\n");
             out.flush();
         } catch (IOException e) {
             if (!shownIoErrors) {
@@ -191,11 +203,54 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                try {
+                    wrtMsgToLogFile(msg, tfLogin.getText());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 log.append(msg + "\n");
                 log.setCaretPosition(log.getDocument().getLength());
+
             }
         });
     }
+
+    /**
+     * Метод загрузки послдений 100 строк в чат JAVA 3-3
+     */
+    private void loadHistoryChat(){
+        File file = new File(tfLogin.getText() + "log.txt");
+        Path path = Paths.get(tfLogin.getText() + "log.txt");
+        int lineCount = 0;
+        try {
+            lineCount = (int) Files.lines(path).count();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int lineExclude;
+        String line;
+
+        if (lineCount > 100) {
+            lineExclude = lineCount - 100;
+        } else {
+            lineExclude = 0;
+        }
+        try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+            while ((line = in.readLine()) != null) {
+                if (lineExclude > 0) {
+                    lineExclude--;
+                } else {
+                    log.append(line + "\n");
+                    log.setCaretPosition(log.getDocument().getLength());
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void showException(Thread t, Throwable e) {
         String msg;
@@ -232,6 +287,8 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         panelTop.setVisible(true);
         setTitle(WINDOW_TITLE);
         userList.setListData(new String[0]);
+        log.setText(""); // очищение текста в чате при дисконекте Java 3-3
+
     }
 
     @Override
@@ -246,6 +303,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     @Override
     public void onReceiveString(SocketThread thread, Socket socket, String msg) {
         handleMessage(msg);
+        loadHistoryChat();
     }
 
     @Override
