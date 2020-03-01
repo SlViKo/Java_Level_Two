@@ -112,6 +112,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         try {
             Socket socket = new Socket(tfIPAddress.getText(), Integer.parseInt(tfPort.getText()));
             socketThread = new SocketThread(this, "Client", socket);
+            socketThread.start(); // так как сокет на стороне клиента запускаю поток не во кострукторе, а отдельно Java 3-4
         } catch (IOException e) {
             showException(Thread.currentThread(), e);
         }
@@ -159,10 +160,12 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         try {
             Socket socket = new Socket(tfIPAddress.getText(), Integer.parseInt(tfPort.getText()));
             socketThread = new SocketThread(this, "Client", socket);
+            socketThread.start();
         } catch (IOException e) {
             showException(Thread.currentThread(), e);
         }
     }
+
 
 
     private void sendMessage() {

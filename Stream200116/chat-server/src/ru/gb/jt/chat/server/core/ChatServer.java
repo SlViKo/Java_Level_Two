@@ -22,7 +22,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     private ServerSocketThread server;
     private final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss: ");
     private Vector<SocketThread> clients = new Vector<>();
-    //private ExecutorService executor = Executors.newFixedThreadPool(4);
+    private ExecutorService executor; // Java 3-4
 
     public ChatServer(ChatServerListener listener) {
         this.listener = listener;
@@ -32,7 +32,10 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
         if (server != null && server.isAlive())
             putLog("Server already started");
         else
+            executor = Executors.newFixedThreadPool(4); // инизиализирую ExecutorService Java 3-4
             server = new ServerSocketThread(this, "Server", port, 2000);
+            //executor.execute(new ServerSocketThread(this, "Server", port, 2000));
+
     }
 
     public void stop() {
@@ -41,7 +44,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
         } else {
             server.interrupt();
         }
-       // executor.shutdownNow();
+        executor.shutdownNow();
     }
 
     private void putLog(String msg) {
@@ -52,8 +55,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
 
     /**
      * Server methods
-     *
-     * */
+     */
 
     @Override
     public void onServerStart(ServerSocketThread thread) {
@@ -87,8 +89,8 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     public void onSocketAccepted(ServerSocketThread thread, ServerSocket server, Socket socket) {
         putLog("Client connected");
         String name = "SocketThread " + socket.getInetAddress() + ":" + socket.getPort();
-       // executor.execute(new ClientThread(this, name, socket));
-        new ClientThread(this, name, socket);
+        executor.execute(new ClientThread(this, name, socket)); // добавил поток созданного сокета после подключения в  ExecutorService в Java 3-4
+        //new ClientThread(this, name, socket);
     }
 
     @Override
@@ -98,8 +100,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
 
     /**
      * Socket methods
-     *
-     * */
+     */
 
     @Override
     public synchronized void onSocketStart(SocketThread thread, Socket socket) {
@@ -111,7 +112,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     public synchronized void onSocketStop(SocketThread thread) {
         ClientThread client = (ClientThread) thread;
         clients.remove(thread);
-        if (client.isAuthorized() && !client.isReconnecting() ) {
+        if (client.isAuthorized() && !client.isReconnecting()) {
             sendToAuthClients(Library.getTypeBroadcast("Server",
                     client.getNickname() + " disconnected"));
         }
@@ -144,8 +145,8 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
         String login = arr[2];
         String password = arr[3];
         String nickname;
-        if(arr[1].equals("Login")) {
-           nickname = SqlClient.getNickname(login, password);
+        if (arr[1].equals("Login")) {
+            nickname = SqlClient.getNickname(login, password);
             if (nickname == null) {
                 putLog("Invalid login attempt: " + login);
                 client.authFail();
@@ -189,7 +190,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
                 String login = arr[1];
                 String password = arr[2];
                 String newNickname = arr[3];
-                if(!SqlClient.isNickname(newNickname)) {
+                if (!SqlClient.isNickname(newNickname)) {
                     String nickname = SqlClient.getNickname(login, password);
                     ClientThread oldClient = findClientByNickname(nickname);
                     oldClient.reconnect();
@@ -201,6 +202,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
                 client.sendMessage(Library.getMsgFormatError(msg));
         }
     }
+
     // launch4j
     private void sendToAuthClients(String msg) {
         for (int i = 0; i < clients.size(); i++) {
