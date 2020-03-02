@@ -5,6 +5,8 @@ import ru.gb.jt.network.SocketThread;
 import ru.gb.jt.network.SocketThreadListener;
 
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ClientThread extends SocketThread {
 
