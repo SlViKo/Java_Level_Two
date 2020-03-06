@@ -33,7 +33,7 @@ public class ArrayAfterFourTest {
         return Arrays.asList(new Object[][] {
                 {new int[]{3,4,5,6,1,5,4,2,2}, new int[]{2,2}}, // обычная проверка
                 {new int[]{3,1,5,6,1,5,1,2,2}, new int[]{0}}, // в массиве нет четверки
-                {new int[]{1,1,4,6,1,5,2,2,2}, new int[]{2}}, // значения не совпдаают
+                {new int[]{1,1,4,6,1,5,2,2,2}, new int[]{6,1,5,2,2,2}}, // значения не совпдаают
                 {new int[]{3,4}, new int[]{0}} // 4 послденияя
         });
     }
@@ -46,7 +46,7 @@ public class ArrayAfterFourTest {
         Assert.assertArrayEquals(arrayAfterFour.arrayNumbersAfterFour(arrayTest), arrayResult);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test
     public void paramTestArray() {
         Assert.assertArrayEquals(arrayAfterFour.arrayNumbersAfterFour(arrayTest), arrayResult);
     }
