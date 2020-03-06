@@ -6,18 +6,20 @@ import ru.gb.jt.network.ServerSocketThreadListener;
 import ru.gb.jt.network.SocketThread;
 import ru.gb.jt.network.SocketThreadListener;
 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.*;
 
 public class ChatServer implements ServerSocketThreadListener, SocketThreadListener {
 
+    private static final Logger logger = Logger.getLogger(ChatServer.class.getName());
     private final ChatServerListener listener;
     private ServerSocketThread server;
     private final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss: ");
@@ -31,11 +33,18 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     public void start(int port) {
         if (server != null && server.isAlive())
             putLog("Server already started");
-        else
-            executor = Executors.newFixedThreadPool(4); // инизиализирую ExecutorService Java 3-4
+        else {
+            //xecutor = Executors.newFixedThreadPool(4); // инизиализирую ExecutorService Java 3-4
             server = new ServerSocketThread(this, "Server", port, 2000);
             //executor.execute(new ServerSocketThread(this, "Server", port, 2000));
-
+            try {
+                Handler h = new FileHandler("logg.log", true);
+                h.setFormatter(new SimpleFormatter());
+                logger.addHandler(h);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void stop() {
@@ -51,6 +60,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
         msg = DATE_FORMAT.format(System.currentTimeMillis()) +
                 Thread.currentThread().getName() + ": " + msg;
         listener.onChatServerMessage(msg);
+        logger.log(Level.INFO, msg);
     }
 
     /**
@@ -89,8 +99,8 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     public void onSocketAccepted(ServerSocketThread thread, ServerSocket server, Socket socket) {
         putLog("Client connected");
         String name = "SocketThread " + socket.getInetAddress() + ":" + socket.getPort();
-        executor.execute(new ClientThread(this, name, socket)); // добавил поток созданного сокета после подключения в  ExecutorService в Java 3-4
-        //new ClientThread(this, name, socket);
+        //executor.execute(new ClientThread(this, name, socket)); // добавил поток созданного сокета после подключения в  ExecutorService в Java 3-4
+        new ClientThread(this, name, socket);
     }
 
     @Override
