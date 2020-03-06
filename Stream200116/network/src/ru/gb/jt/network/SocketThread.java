@@ -17,7 +17,7 @@ public class  SocketThread extends Thread {
         this.socket = socket;
         this.listener = listener;
         // закоментировал строку для запуска сокета через ExecutorService Java 3-4
-        // start();
+        start();
     }
 
     @Override
