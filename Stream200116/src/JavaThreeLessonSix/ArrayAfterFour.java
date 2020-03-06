@@ -1,5 +1,4 @@
 /**
- *
  * Написать метод, которому в качестве аргумента передается не пустой одномерный целочисленный массив. Метод должен вернуть новый массив, который получен путем вытаскивания из исходного массива элементов, идущих после последней четверки. Входной массив должен содержать хотя бы одну четверку, иначе в методе необходимо выбросить RuntimeException.
  * Написать набор тестов для этого метода (по 3-4 варианта входных данных).
  * Вх: [ 1 2 4 4 2 3 4 1 7 ] -> вых: [ 1 7 ].
@@ -11,6 +10,17 @@ package JavaThreeLessonSix;
 
 public class ArrayAfterFour {
 
+
+    public static void main(String[] args) {
+
+        ArrayAfterFour arrayAfterFour = new ArrayAfterFour();
+        int[] a = arrayAfterFour.arrayNumbersAfterFour(new int[]{2, 1, 4});
+
+        for (int i = 0; i < a.length; i++) {
+            System.out.println(a[i]);
+        }
+    }
+
     private final int FOUR = 4;
 
     public int[] arrayNumbersAfterFour(int[] numbers) {
@@ -21,9 +31,10 @@ public class ArrayAfterFour {
                 indexLastFour = i;
             }
         }
-        if(indexLastFour != -1 || indexLastFour != numbers.length-1) {
-            numbersAfterFour = new int[numbers.length-indexLastFour-1];
-            System.arraycopy(numbers, indexLastFour+1, numbersAfterFour, 0, numbers.length-indexLastFour-1);
+
+        if (indexLastFour != -1 && indexLastFour != numbers.length - 1) {
+            numbersAfterFour = new int[numbers.length - indexLastFour - 1];
+            System.arraycopy(numbers, indexLastFour + 1, numbersAfterFour, 0, numbers.length - indexLastFour - 1);
         } else {
             throw new RuntimeException("В массиве 4 последняя в списке или массив не содержит 4");
         }
