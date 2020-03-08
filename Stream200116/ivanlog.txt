@@ -143,3 +143,9 @@ Start
 18:50:27: SlViKo: asfdfdsa
 18:50:28: SlViKo: f
 18:50:30: Server: SlViKo disconnected
+Start
+Start
+20:58:00: Server: ку connected
+20:58:02: ку: шщз
+Start
+21:03:36: Server: ку connected

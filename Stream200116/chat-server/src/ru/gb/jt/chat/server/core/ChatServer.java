@@ -19,7 +19,7 @@ import java.util.logging.*;
 
 public class ChatServer implements ServerSocketThreadListener, SocketThreadListener {
 
-    private static final Logger logger = Logger.getLogger(ChatServer.class.getName());
+    private static final Logger logger = Logger.getLogger(ChatServer.class.getName()); // использовал стандартный логер JAVA 3-6
     private final ChatServerListener listener;
     private ServerSocketThread server;
     private final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss: ");
@@ -53,14 +53,15 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
         } else {
             server.interrupt();
         }
-        executor.shutdownNow();
+        //executor.shutdownNow();
+
     }
 
     private void putLog(String msg) {
         msg = DATE_FORMAT.format(System.currentTimeMillis()) +
                 Thread.currentThread().getName() + ": " + msg;
         listener.onChatServerMessage(msg);
-        logger.log(Level.INFO, msg);
+        logger.log(Level.INFO, msg); // добавление записи в лог сервера JAVA 3-6
     }
 
     /**
