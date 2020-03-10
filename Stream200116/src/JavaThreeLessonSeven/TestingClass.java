@@ -12,9 +12,10 @@ class TestingClass {
     }
 
     private static void performTests(Class cls) throws RuntimeException {
-        TestingClass testingObj = null;
+
+        TestClass testClass = null;
         try {
-            testingObj = (TestingClass)cls.newInstance();
+            testClass = (TestClass)cls.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -24,6 +25,7 @@ class TestingClass {
         Method[] methods = cls.getMethods();
         List<MethodWithPriority> testingMethods = new ArrayList<>();
 
+        //цикл распределения типом методов и проверки на единственность методов Before и After
         for (Method method : methods)
             if (method.getAnnotation(BeforeSuite.class) != null) {
                 if (beforeMethod != null) {
@@ -40,18 +42,19 @@ class TestingClass {
                 testingMethods.add(new MethodWithPriority(method, annotationTst.value()));
             }
 
+        // сортировка коллекции по приоритету
         Collections.sort(testingMethods, (o1, o2) -> o1.compareTo(o2));
 
-
+            // запуск методов в порядке аннотации
         try {
             if (beforeMethod != null)
-                beforeMethod.invoke(testingObj);
+                beforeMethod.invoke(testClass);
 
             for (MethodWithPriority methodWP : testingMethods)
-                methodWP.method.invoke(testingObj);
+                methodWP.method.invoke(testClass);
 
             if (afterMethod != null)
-                afterMethod.invoke(testingObj);
+                afterMethod.invoke(testClass);
         } catch (Exception e){
             e.printStackTrace();
         }
