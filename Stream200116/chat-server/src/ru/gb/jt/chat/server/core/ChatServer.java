@@ -39,7 +39,7 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
             //executor.execute(new ServerSocketThread(this, "Server", port, 2000));
             try {
                 Handler h = new FileHandler("logg.log", true);
-                h.setFormatter(new SimpleFormatter());
+                h.setFormatter(new SimpleFormatter());  // java 3-6
                 logger.addHandler(h);
             } catch (IOException e) {
                 e.printStackTrace();
